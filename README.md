@@ -1,2 +1,2 @@
-# GOA-Backend
+# GAO-Backend
 Backend server for GAO-SIM
