@@ -7,9 +7,9 @@ const os = require('os');
  */
 
 module.exports = {
-  apps : [{
+  apps: [{
     name: "colyseus-app",
-    script: 'build/index.js',
+    script: 'lib/index.js',
     time: true,
     watch: false,
     instances: os.cpus().length,
@@ -19,5 +19,15 @@ module.exports = {
       NODE_ENV: 'production'
     }
   }],
+  deploy: {
+    production: {
+      "user": "deploy",
+      "host": ["155.138.239.22"],
+      "ref": "origin/main",
+      "repo": "git@github.com:loganrw/GAO-Backend.git",
+      "path": "/home/deploy",
+      "post-deploy": "npm install && npm run build && npm exec colyseus-post-deploy"
+    }
+  }
 };
 
