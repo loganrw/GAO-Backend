@@ -24,7 +24,7 @@ module.exports = {
       "user": "deploy",
       "host": ["155.138.239.22"],
       "ref": "origin/main",
-      "repo": "git@github.com/loganrw/GAO-Backend.git",
+      "repo": "git@github.com:loganrw/GAO-Backend.git",
       "path": "/home/deploy",
       "post-deploy": "npm install && npm run build && npm exec colyseus-post-deploy"
     }
