@@ -21,7 +21,7 @@ module.exports = {
   }],
   deploy: {
     production: {
-      "user": "root",
+      "user": "deploy",
       "host": ["155.138.239.22"],
       "ref": "origin/main",
       "repo": "git@github.com/loganrw/GAO-Backend.git",
