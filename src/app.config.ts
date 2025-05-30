@@ -1,7 +1,7 @@
 import config from "@colyseus/tools";
 import { monitor } from "@colyseus/monitor";
 import { playground } from "@colyseus/playground";
-import { matchMaker } from "colyseus";
+import { Client, matchMaker } from "colyseus";
 
 /**
  * Import your Room files
@@ -27,6 +27,11 @@ export default config({
             const rooms = await matchMaker.query({ private: false, locked: false });
             res.send(JSON.stringify(rooms));
         });
+
+        app.post("/leave_room", async (req, res) => {
+            let client: Client = req.body.client;
+            client.leave();
+        })
 
         app.post("/join_private", async (req, res) => {
             let name = req.body.roomName;
