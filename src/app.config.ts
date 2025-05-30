@@ -1,7 +1,7 @@
 import config from "@colyseus/tools";
 import { monitor } from "@colyseus/monitor";
 import { playground } from "@colyseus/playground";
-import { Client, matchMaker } from "colyseus";
+import { Client, matchMaker, Room } from "colyseus";
 
 /**
  * Import your Room files
@@ -29,8 +29,9 @@ export default config({
         });
 
         app.post("/leave_room", async (req, res) => {
-            let client: Client = req.body.client;
-            client.leave();
+            let room: Room = JSON.parse(req.body.room) as Room;
+            if (room.state.players <= 0) room.disconnect();
+            res.sendStatus(200);
         })
 
         app.post("/join_private", async (req, res) => {
