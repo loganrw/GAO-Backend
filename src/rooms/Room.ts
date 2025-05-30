@@ -10,11 +10,14 @@ export class MyRoom extends Room<RoomState> {
   }
 
   onJoin(client: Client, options: any) {
-
+    this.state.players++;
   }
 
   onLeave(client: Client, consented: boolean) {
-    if (this.clients.length <= 0) this.disconnect();
+    this.state.players--;
+    if (this.state.players <= 0) {
+      this.disconnect();
+    }
     console.log(client.sessionId, "left!");
   }
 
