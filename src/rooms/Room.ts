@@ -19,6 +19,7 @@ export class MyRoom extends Room<RoomState> {
       this.disconnect();
     }
     console.log(client.sessionId, "left!");
+    console.log("Players left: ", this.state.players);
   }
 
   onDispose() {
