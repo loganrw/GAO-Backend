@@ -40,7 +40,7 @@ export default config({
                 }
             });
 
-        })
+        });
 
         app.post("/create_room", async (req, res) => {
             let roomName = req.body.roomName;

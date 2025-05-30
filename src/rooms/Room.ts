@@ -14,6 +14,7 @@ export class MyRoom extends Room<RoomState> {
   }
 
   onLeave(client: Client, consented: boolean) {
+    if (this.clients.length <= 0) this.disconnect();
     console.log(client.sessionId, "left!");
   }
 
