@@ -33,6 +33,7 @@ export default config({
             let name = req.body.roomName;
             let pass = req.body.roomPassword;
             console.log(name, pass);
+            console.log(await matchMaker.query({ private: true, locked: false }));
             await matchMaker.query({ name: name }).then(async (room) => {
                 console.log(room);
                 if (room[0]?.metadata.roomPass === pass) {
