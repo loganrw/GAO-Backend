@@ -31,7 +31,7 @@ export default config({
         app.post("/get_room", async (req, res) => {
             let roomId = req.body.roomId;
             let room = matchMaker.getLocalRoomById(roomId);
-            if (room) res.send(room);
+            if (room) res.send(JSON.stringify(room));
 
         });
 
