@@ -28,6 +28,13 @@ export default config({
             res.send(JSON.stringify(rooms));
         });
 
+        app.post("/get_room", async (req, res) => {
+            let roomId = req.body.roomId;
+            await matchMaker.getRoomById(roomId).then(room => {
+                res.send(JSON.stringify(room));
+            })
+        });
+
         app.post("/join_private", async (req, res) => {
             let name = req.body.roomName;
             let pass = req.body.roomPassword;
