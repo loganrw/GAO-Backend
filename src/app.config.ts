@@ -29,16 +29,10 @@ export default config({
             res.send(JSON.stringify(rooms));
         });
 
-        app.post("/leave_room", async (req, res) => {
-            let roomId = req.body.roomId;
-            let room = matchMaker.getLocalRoomById(roomId);
-            if (room) res.send(stringify(room));
-
-        });
-
         app.post("/join_private", async (req, res) => {
             let name = req.body.roomName;
             let pass = req.body.roomPassword;
+            console.log(name, pass);
             await matchMaker.query({ name: name }).then(async (room) => {
                 if (room[0]?.metadata.roomPass === pass) {
                     await matchMaker.joinById(room[0].roomId);

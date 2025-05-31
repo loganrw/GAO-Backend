@@ -16,11 +16,9 @@ export class MyRoom extends Room<RoomState> {
   onLeave(client: Client, consented: boolean) {
     this.state.players--;
     if (this.state.players <= 0) {
-      console.log("no players left. closing room.")
       this.disconnect();
     }
     console.log(client.sessionId, "left!");
-    console.log("Players left: ", this.state.players);
   }
 
   onDispose() {
