@@ -6,10 +6,12 @@ export class MyRoom extends Room<RoomState> {
   state = new RoomState();
 
   onCreate(options: any) {
+    this.state.players = 0;
   }
 
   onJoin(client: Client, options: any) {
     this.state.players++;
+    console.log(this.state);
   }
 
   onLeave(client: Client, consented: boolean) {

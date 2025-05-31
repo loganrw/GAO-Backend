@@ -31,7 +31,7 @@ export default config({
         app.post("/leave_room", async (req, res) => {
             let room: MyRoom = JSON.parse(req.body.room) as MyRoom;
             console.log("ROOM: ", room);
-            if (room.state.players <= 0) room.disconnect();
+            //if (room.state.players <= 0) room.disconnect();
             res.sendStatus(200);
         })
 
