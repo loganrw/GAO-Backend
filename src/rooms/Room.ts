@@ -7,15 +7,20 @@ export class MyRoom extends Room<RoomState> {
   onCreate(options: any) {
     this.maxClients = this.maxClients;
     this.state = new RoomState();
+    this.onMessage("damage-player", (client, data) => {
+      const player = this.state.players.get(client.sessionId);
+      player.life = 10;
+      player.life -= data.damage;
+    })
   }
 
   onJoin(client: Client, options: any) {
-    this.state.players++;
+    this.state.playerCount++;
   }
 
   onLeave(client: Client, consented: boolean) {
-    this.state.players--;
-    if (this.state.players <= 0) {
+    this.state.playerCount--;
+    if (this.state.playerCount <= 0) {
       this.disconnect();
     }
     console.log(client.sessionId, "left!");
