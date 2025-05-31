@@ -34,6 +34,7 @@ export default config({
             let pass = req.body.roomPassword;
             console.log(name, pass);
             await matchMaker.query({ name: name }).then(async (room) => {
+                console.log(room);
                 if (room[0]?.metadata.roomPass === pass) {
                     await matchMaker.joinById(room[0].roomId);
                     res.sendStatus(200);
