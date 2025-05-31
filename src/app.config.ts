@@ -1,7 +1,8 @@
 import config from "@colyseus/tools";
 import { monitor } from "@colyseus/monitor";
 import { playground } from "@colyseus/playground";
-import { Client, matchMaker, Room } from "colyseus";
+import { matchMaker } from "colyseus";
+import { stringify } from 'flatted';
 
 /**
  * Import your Room files
@@ -28,10 +29,10 @@ export default config({
             res.send(JSON.stringify(rooms));
         });
 
-        app.post("/get_room", async (req, res) => {
+        app.post("/leave_room", async (req, res) => {
             let roomId = req.body.roomId;
             let room = matchMaker.getLocalRoomById(roomId);
-            if (room) res.send(JSON.stringify(room));
+            if (room) res.send(stringify(room));
 
         });
 
