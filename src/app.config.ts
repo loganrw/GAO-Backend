@@ -58,15 +58,17 @@ export default config({
                 room = await matchMaker.createRoom('room', {});
                 room.metadata = {
                     roomPass: roomPassword,
+                    createdBy: createdBy,
+                    displayName: roomName
                 }
                 room.private = true;
             } else {
                 room = await matchMaker.createRoom('room', {});
                 room.metadata = {
-                    createdBy: createdBy
+                    createdBy: createdBy,
+                    displayName: roomName
                 }
             }
-            room.name = roomName;
             res.send(room);
         });
         /**
