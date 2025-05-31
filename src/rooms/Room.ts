@@ -3,10 +3,10 @@ import { RoomState } from "./schema/RoomState";
 
 export class MyRoom extends Room<RoomState> {
   maxClients = 2;
-  state = new RoomState();
 
   onCreate(options: any) {
-    this.state.players = 0;
+    this.maxClients = this.maxClients;
+    this.state = new RoomState();
   }
 
   onJoin(client: Client, options: any) {
