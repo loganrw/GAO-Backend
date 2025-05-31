@@ -30,9 +30,9 @@ export default config({
 
         app.post("/get_room", async (req, res) => {
             let roomId = req.body.roomId;
-            await matchMaker.getRoomById(roomId).then(room => {
-                res.send(JSON.stringify(room));
-            })
+            let room = matchMaker.getLocalRoomById(roomId);
+            if (room) res.send(room);
+
         });
 
         app.post("/join_private", async (req, res) => {
