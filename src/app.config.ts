@@ -30,7 +30,8 @@ export default config({
 
         app.post("/leave_room", async (req, res) => {
             let room: MyRoom = JSON.parse(req.body.room) as MyRoom;
-            if (room.state.players <= 0) room.disconnect();
+            let state = room.state.toJSON();
+            if (state.players <= 0) room.disconnect();
             // Add logic for the reamining player to win here
             res.sendStatus(200);
         })
