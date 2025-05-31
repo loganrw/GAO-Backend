@@ -66,6 +66,7 @@ export default config({
                     displayName: roomName
                 }
             }
+            room.name = roomName;
             res.send(room);
         });
         /**
