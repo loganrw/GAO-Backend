@@ -1,5 +1,5 @@
 import { Room, Client } from "@colyseus/core";
-import { RoomState } from "./schema/RoomState";
+import { Player, RoomState } from "./schema/RoomState";
 
 export class MyRoom extends Room<RoomState> {
   maxClients = 2;
@@ -8,7 +8,6 @@ export class MyRoom extends Room<RoomState> {
     this.maxClients = this.maxClients;
     this.state = new RoomState();
     this.onMessage("damage-player", (client, data) => {
-      console.log(this.state);
       const player = this.state.players.get(client.sessionId);
       console.log(player);
       player.life = 10;
@@ -18,6 +17,7 @@ export class MyRoom extends Room<RoomState> {
 
   onJoin(client: Client, options: any) {
     this.state.playerCount++;
+    this.state.players.set(client.sessionId, new Player());
   }
 
   onLeave(client: Client, consented: boolean) {
