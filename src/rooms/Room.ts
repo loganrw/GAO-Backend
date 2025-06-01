@@ -8,7 +8,9 @@ export class MyRoom extends Room<RoomState> {
     this.maxClients = this.maxClients;
     this.state = new RoomState();
     this.onMessage("damage-player", (client, data) => {
+      console.log(this.state);
       const player = this.state.players.get(client.sessionId);
+      console.log(player);
       player.life = 10;
       player.life -= data.damage;
     })
