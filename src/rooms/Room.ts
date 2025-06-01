@@ -9,9 +9,11 @@ export class MyRoom extends Room<RoomState> {
     this.state = new RoomState();
     this.onMessage("damage-player", (client, data) => {
       const player = this.state.players.get(client.sessionId);
-      console.log(player);
-      player.life = 10;
       player.life -= data.damage;
+    })
+    this.onMessage("set-life", (client, data) => {
+      const player = this.state.players.get(client.sessionId);
+      player.life = data.value;
     })
   }
 
