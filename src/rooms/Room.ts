@@ -15,6 +15,9 @@ export class MyRoom extends Room<RoomState> {
       const player = this.state.players.get(client.sessionId);
       player.life = data.value;
     })
+    this.onMessage("get-enemy-life", (client, data) => {
+      console.log(this.state.players.toJSON())
+    })
   }
 
   onJoin(client: Client, options: any) {
