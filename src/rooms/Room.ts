@@ -7,22 +7,18 @@ export class MyRoom extends Room<RoomState> {
   onCreate(options: any) {
     this.maxClients = this.maxClients;
     this.state = new RoomState();
-    this.onMessage("damage-player", (client, data) => {
-      const player = this.state.players.get(client.sessionId);
-      player.life -= data.damage;
-    })
     this.onMessage("set-life", (client, data) => {
-      const player = this.state.players.get(client.sessionId);
-      player.life = data.value;
-    })
+      client.userData.slot === "p1" ? this.state.players.set("p1Life", data.value) : this.state.players.set("p2Life", data.value);
+    });
     this.onMessage("get-enemy-life", (client, data) => {
-      console.log(this.state.players.toJSON())
-    })
+      client.userData.slot === "p1" ? client.send(this.state.players.get("p2Life")) : client.send(this.state.players.get("p1Life"));
+    });
   }
 
   onJoin(client: Client, options: any) {
     this.state.playerCount++;
     this.state.players.set(client.sessionId, new Player());
+    client.userData = { slot: (this.clients.length % 2 == 0) ? "p2" : "p1" }
   }
 
   onLeave(client: Client, consented: boolean) {
