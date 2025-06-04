@@ -9,10 +9,12 @@ export class MyRoom extends Room<RoomState> {
     this.maxClients = this.maxClients;
     this.onMessage("set-life", (client, data) => {
       let p1Id = this.state.players.get("p1Id");
+      console.log("ID in SL: ", p1Id);
       p1Id === client.sessionId as any ? this.state.players.set("p1Life", data.value) : this.state.players.set("p2Life", data.value);
     });
     this.onMessage("get-enemy-life", (client, data) => {
       let p1Id = this.state.players.get("p1Id");
+      console.log("ID in GEHP: ", p1Id);
       p1Id === client.sessionId as any ? client.send(this.state.players.get("p2Life")) : client.send(this.state.players.get("p1Life"));
     });
   }
