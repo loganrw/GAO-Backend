@@ -3,22 +3,24 @@ import { Player, RoomState } from "./schema/RoomState";
 
 export class MyRoom extends Room<RoomState> {
   maxClients = 2;
+  state = new RoomState();
 
   onCreate(options: any) {
     this.maxClients = this.maxClients;
-    this.state = new RoomState();
     this.onMessage("set-life", (client, data) => {
-      client.userData.slot === "p1" ? this.state.players.set("p1Life", data.value) : this.state.players.set("p2Life", data.value);
+      let p1Id = this.state.players.get("p1Id");
+      p1Id === client.sessionId as any ? this.state.players.set("p1Life", data.value) : this.state.players.set("p2Life", data.value);
     });
     this.onMessage("get-enemy-life", (client, data) => {
-      client.userData.slot === "p1" ? client.send(this.state.players.get("p2Life")) : client.send(this.state.players.get("p1Life"));
+      let p1Id = this.state.players.get("p1Id");
+      p1Id === client.sessionId as any ? client.send(this.state.players.get("p2Life")) : client.send(this.state.players.get("p1Life"));
     });
   }
 
   onJoin(client: Client, options: any) {
     this.state.playerCount++;
     this.state.players.set(client.sessionId, new Player());
-    client.userData = { slot: (this.clients.length % 2 == 0) ? "p2" : "p1" }
+    this.clients.length % 2 === 0 ? this.state.players.set("p2Id", client.sessionId as any) : this.state.players.set("p1Id", client.sessionId as any);
   }
 
   onLeave(client: Client, consented: boolean) {
