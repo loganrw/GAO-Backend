@@ -8,21 +8,17 @@ export class MyRoom extends Room<RoomState> {
   onCreate(options: any) {
     this.maxClients = this.maxClients;
     this.onMessage("set-life", (client, data) => {
-      let p1Id = this.state.players.get("p1Id");
-      console.log("ID in SL: ", p1Id);
-      p1Id === client.sessionId as any ? this.state.players.set("p1Life", data.value) : this.state.players.set("p2Life", data.value);
+      this.state.p1Id === client.sessionId ? this.state.p1Life = data.value : this.state.p2Life = data.value;
     });
     this.onMessage("get-enemy-life", (client, data) => {
-      let p1Id = this.state.players.get("p1Id");
-      console.log("ID in GEHP: ", p1Id);
-      p1Id === client.sessionId as any ? client.send(this.state.players.get("p2Life")) : client.send(this.state.players.get("p1Life"));
+      this.state.p1Id === client.sessionId ? client.send(this.state.p2Life) : client.send(this.state.p1Life);
     });
   }
 
   onJoin(client: Client, options: any) {
     this.state.playerCount++;
     this.state.players.set(client.sessionId, new Player());
-    this.clients.length % 2 === 0 ? this.state.players.set("p2Id", client.sessionId as any) : this.state.players.set("p1Id", client.sessionId as any);
+    this.clients.length % 2 === 0 ? this.state.p2Id = client.sessionId : this.state.p1Id = client.sessionId;
   }
 
   onLeave(client: Client, consented: boolean) {
