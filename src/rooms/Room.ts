@@ -10,6 +10,9 @@ export class MyRoom extends Room<RoomState> {
     this.onMessage("set-life", (client, data) => {
       this.state.p1Id === client.sessionId ? this.state.p1Life = data.value : this.state.p2Life = data.value;
     });
+    this.onMessage("get-life", (client, data) => {
+      this.state.p1Id === client.sessionId ? client.send(this.state.p1Life) : client.send(this.state.p2Life);
+    });
     this.onMessage("get-enemy-life", (client, data) => {
       this.state.p1Id === client.sessionId ? client.send(this.state.p2Life) : client.send(this.state.p1Life);
     });
