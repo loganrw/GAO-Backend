@@ -11,6 +11,7 @@ export class MyRoom extends Room<RoomState> {
       this.state.p1Id === client.sessionId ? this.state.p1Life = data.value : this.state.p2Life = data.value;
     });
     this.onMessage("send-message", (client, data) => {
+      console.log(data);
       data.excludeClient ? this.broadcast("message-sent", data, { except: client }) : this.broadcast("message-sent", data);
     });
     this.onMessage("get-first-turn", () => {
