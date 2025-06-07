@@ -11,16 +11,15 @@ export class MyRoom extends Room<RoomState> {
       this.state.p1Id === client.sessionId ? this.state.p1Life = data.value : this.state.p2Life = data.value;
     });
     this.onMessage("send-message", (client, data) => {
-      console.log(data.data.excludeClient);
       data.data.excludeClient ? this.broadcast("message-sent", data, { except: client }) : this.broadcast("message-sent", data);
     });
     this.onMessage("get-first-turn", () => {
-      let p1GoesFirst = this.decideFirstTurn();
-      this.state.p1Turn = p1GoesFirst;
-      this.broadcast("turn-order", { player1First: p1GoesFirst });
+      let firstTurnPlayer = this.decideFirstTurn();
+      this.state.turnPlayer = firstTurnPlayer;
+      this.broadcast("turn-order", { firstTurn: firstTurnPlayer });
     });
     this.onMessage("change-turn", () => {
-      let turn = !this.state.p1Turn;
+      let turn = this.state.turnPlayer === this.state.p1Id ? this.state.p2Id : this.state.p1Id;
       this.broadcast("changed-turn", { p1Turn: turn });
     })
   }
@@ -44,7 +43,7 @@ export class MyRoom extends Room<RoomState> {
   }
 
   decideFirstTurn() {
-    return Math.random() < 0.5 ? true : false;
+    return Math.random() < 0.5 ? this.state.p1Id : this.state.p2Id;
   }
 
 }
