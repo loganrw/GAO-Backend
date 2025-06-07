@@ -12,6 +12,7 @@ export class RoomState extends Schema {
   @type("string") p1Id: string;
   @type("string") p2Id: string;
   @type("string") messages: string[];
+  @type("boolean") p1Turn: boolean;
   @type({ map: Player }) players = new MapSchema<Player>();
 
 }

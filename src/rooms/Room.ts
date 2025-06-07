@@ -13,6 +13,15 @@ export class MyRoom extends Room<RoomState> {
     this.onMessage("send-message", (client, data) => {
       this.broadcast("message-sent", data, { except: client });
     });
+    this.onMessage("get-first-turn", () => {
+      let p1GoesFirst = this.decideFirstTurn();
+      this.state.p1Turn = p1GoesFirst;
+      this.broadcast("turn-order", { player1First: p1GoesFirst });
+    });
+    this.onMessage("change-turn", () => {
+      let turn = !this.state.p1Turn;
+      this.broadcast("changed-turn", { p1Turn: turn });
+    })
   }
 
   onJoin(client: Client, options: any) {
@@ -31,6 +40,10 @@ export class MyRoom extends Room<RoomState> {
 
   onDispose() {
     console.log("room", this.roomId, "disposing...");
+  }
+
+  decideFirstTurn() {
+    return Math.random() < 0.5 ? true : false;
   }
 
 }
