@@ -13,10 +13,10 @@ export class MyRoom extends Room<RoomState> {
     this.onMessage("send-message", (client, data) => {
       data.data.excludeClient ? this.broadcast("message-sent", data, { except: client }) : this.broadcast("message-sent", data);
     });
-    this.onMessage("get-first-turn", () => {
+    this.onMessage("get-first-turn", (client, data) => {
       let firstTurnPlayer = this.decideFirstTurn();
       this.state.turnPlayer = firstTurnPlayer;
-      this.broadcast("turn-order", { firstTurn: firstTurnPlayer });
+      data.data.excludeClient ? this.broadcast("turn-order", { firstTurn: firstTurnPlayer }, { except: client }) : this.broadcast("turn-order", { firstTurn: firstTurnPlayer });
     });
     this.onMessage("change-turn", () => {
       let turn = this.state.turnPlayer === this.state.p1Id ? this.state.p2Id : this.state.p1Id;
