@@ -16,9 +16,11 @@ export class MyRoom extends Room<RoomState> {
     this.onMessage("get-first-turn", (client, data) => {
       let firstTurnPlayer;
       // Player 1 Decides turn
-      if (this.state.p1Id === client.sessionId) this.decideFirstTurn();
-      this.state.turnPlayer = firstTurnPlayer;
-      if (data) data.data?.excludeClient ? this.broadcast("turn-order", { firstTurn: firstTurnPlayer }, { except: client }) : this.broadcast("turn-order", { firstTurn: firstTurnPlayer });
+      if (this.state.p1Id === client.sessionId) {
+        firstTurnPlayer = this.decideFirstTurn();
+        this.state.turnPlayer = firstTurnPlayer;
+        if (data) data.data?.excludeClient ? this.broadcast("turn-order", { firstTurn: firstTurnPlayer }, { except: client }) : this.broadcast("turn-order", { firstTurn: firstTurnPlayer });
+      }
     });
     this.onMessage("change-turn", () => {
       let turn = this.state.turnPlayer === this.state.p1Id ? this.state.p2Id : this.state.p1Id;
