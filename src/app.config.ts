@@ -2,8 +2,7 @@ import config from "@colyseus/tools";
 import { monitor } from "@colyseus/monitor";
 import { playground } from "@colyseus/playground";
 import { matchMaker } from "colyseus";
-import { stringify } from 'flatted';
-
+import { WebSocketTransport } from "@colyseus/ws-transport"
 /**
  * Import your Room files
  */
@@ -11,12 +10,18 @@ import { MyRoom } from "./rooms/Room";
 
 export default config({
 
+    initializeTransport: function (opts) {
+        return new WebSocketTransport({
+            ...opts,
+            maxPayload: 1024 * 1024 * 1, // 1MB Max Payload
+        });
+    },
+
     initializeGameServer: (gameServer) => {
         /**
          * Define your room handlers:
          */
         gameServer.define('room', MyRoom).enableRealtimeListing();
-
     },
 
     initializeExpress: (app) => {

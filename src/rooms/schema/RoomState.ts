@@ -14,5 +14,6 @@ export class RoomState extends Schema {
   @type("string") messages: string[];
   @type("boolean") turnPlayer: string;
   @type({ map: Player }) players = new MapSchema<Player>();
+  @type("number") currentPhase: number = -1;
 
 }

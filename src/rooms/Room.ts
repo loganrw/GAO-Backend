@@ -3,6 +3,7 @@ import { Player, RoomState } from "./schema/RoomState";
 
 export class MyRoom extends Room<RoomState> {
   maxClients = 2;
+  maxPhase = 4;
   state = new RoomState();
 
   onCreate(options: any) {
@@ -22,10 +23,43 @@ export class MyRoom extends Room<RoomState> {
         if (data) data.data?.excludeClient ? this.broadcast("turn-order", { firstTurn: firstTurnPlayer }, { except: client }) : this.broadcast("turn-order", { firstTurn: firstTurnPlayer });
       }
     });
+    this.onMessage("advance-phase", () => {
+      if (this.state.currentPhase === this.maxPhase) {
+        this.state.currentPhase = 0;
+        let turn = this.state.turnPlayer === this.state.p1Id ? this.state.p2Id : this.state.p1Id;
+        this.state.turnPlayer = turn;
+        this.broadcast("changed-turn", { playerTurn: turn });
+        this.broadcast("phase-change", {
+          phase: this.state.currentPhase
+        });
+      } else {
+        this.state.currentPhase++;
+        this.broadcast("phase-change", {
+          phase: this.state.currentPhase
+        });
+      }
+    });
     this.onMessage("change-turn", () => {
       let turn = this.state.turnPlayer === this.state.p1Id ? this.state.p2Id : this.state.p1Id;
-      this.broadcast("changed-turn", { p1Turn: turn });
-    })
+      this.broadcast("changed-turn", { playerTurn: turn });
+    });
+    this.onMessage("card-played", (client, data) => {
+      if (this.state.p1Id === client.sessionId) {
+        this.broadcast("p1-played", {
+          data: {
+            card: data.card,
+            blob: data.blob
+          }
+        });
+      } else {
+        this.broadcast("p2-played", {
+          data: {
+            card: data.card,
+            blob: data.blob
+          }
+        });
+      }
+    });
   }
 
   onJoin(client: Client, options: any) {
